@@ -24,7 +24,7 @@ public class BookDto {
     @Size(min=2,max=500, message= "Description does not respect the field validation rules (2-500 characters).")
     private String description;
 
-    @ApiModelProperty(required = true, example = "01.01.2020")
+    @ApiModelProperty(required = true, example = "01-01-2020")
     @JsonFormat(pattern = Consts.DATE_FORMAT)
     private Date publicationDate;
 
