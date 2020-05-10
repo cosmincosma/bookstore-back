@@ -5,7 +5,6 @@ import com.cosmin.bookstoreback.models.Language;
 import lombok.Getter;
 import lombok.Setter;
 
-import java.time.Year;
 import java.util.Date;
 
 /**
@@ -18,7 +17,7 @@ public class BookDetailsDto {
     private Long id;
     private String title;
     private String description;
-    private Year publicationDate;
+    private Date publicationDate;
     private Integer numberOfPages;
     private Language language;
     private Double cost;

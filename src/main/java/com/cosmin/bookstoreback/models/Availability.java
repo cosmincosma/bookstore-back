@@ -4,6 +4,6 @@ public enum Availability {
 
     UNKNOWN,
     AVAILABLE,
-    NOT_AVAILABLE;
+    NOT_AVAILABLE
 
 }

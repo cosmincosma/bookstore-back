@@ -14,15 +14,15 @@ import java.util.List;
 @Service
 public class BookServiceImpl implements BookService {
 
-    private BookRepository bookRepository;
-    private NumberGenerator numberGenerator;
-    private SecurityServiceImpl securityService;
+    private final BookRepository bookRepository;
+    private final NumberGenerator numberGenerator;
+    private final SecurityServiceImpl securityService;
 
     @Autowired
     public BookServiceImpl(BookRepository bookRepository, NumberGenerator numberGenerator, SecurityServiceImpl securityService) {
         this.bookRepository = bookRepository;
         this.numberGenerator = numberGenerator;
-        this.securityService =  securityService;
+        this.securityService = securityService;
     }
 
     @Override

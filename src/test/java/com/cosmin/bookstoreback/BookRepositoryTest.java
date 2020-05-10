@@ -10,6 +10,7 @@ import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit4.SpringRunner;
+
 import java.util.Date;
 
 import static org.junit.Assert.*;
@@ -18,18 +19,18 @@ import static org.junit.Assert.*;
 @SpringBootTest(classes = BookstoreBackApplication.class)
 class BookRepositoryTest {
 
-    private BookRepository bookRepository;
-    private NumberGenerator numberGenerator;
+    private final BookRepository bookRepository;
+    private final NumberGenerator numberGenerator;
 
     @Autowired
-    public BookRepositoryTest(BookRepository bookRepository, NumberGenerator numberGenerator){
+    public BookRepositoryTest(BookRepository bookRepository, NumberGenerator numberGenerator) {
         this.bookRepository = bookRepository;
         this.numberGenerator = numberGenerator;
     }
 
     @Test
     public void repositoryTest() {
-        assertEquals(Integer.valueOf(0),bookRepository.countBooks());
+        assertEquals(Integer.valueOf(0), bookRepository.countBooks());
         assertEquals(0, bookRepository.findAllByOrderByTitleAsc().size());
 
         Book book = new Book();
@@ -51,8 +52,8 @@ class BookRepositoryTest {
         assertNotNull(bookFound);
         assertNull(nullBook);
 
-        assertEquals(Integer.valueOf(1),bookRepository.countBooks());
-        assertEquals("Alchimistul",bookFound.getTitle());
+        assertEquals(Integer.valueOf(1), bookRepository.countBooks());
+        assertEquals("Alchimistul", bookFound.getTitle());
 
         assertNotEquals(2, bookRepository.findAllByOrderByTitleAsc().size());
         assertNotEquals(Integer.valueOf(2), bookRepository.countBooks());
