@@ -26,7 +26,6 @@ public class Book {
     @Column(name = "publication_date")
     private Date publicationDate;
 
-
     @Column(name = "number_of_pages", nullable = false)
     private Integer numberOfPages;
 
