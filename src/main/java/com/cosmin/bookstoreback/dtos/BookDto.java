@@ -7,7 +7,10 @@ import io.swagger.annotations.ApiModelProperty;
 import lombok.Getter;
 import lombok.Setter;
 
-import javax.validation.constraints.*;
+import javax.validation.constraints.Min;
+import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Size;
 import java.util.Date;
 
 /**
@@ -18,10 +21,10 @@ import java.util.Date;
 public class BookDto {
 
     @NotBlank
-    @Size(min=2, max=50, message= "Title does not respect the field validation rules (2-50 characters).")
+    @Size(min = 2, max = 50, message = "Title does not respect the field validation rules (2-50 characters).")
     private String title;
 
-    @Size(min=2,max=500, message= "Description does not respect the field validation rules (2-500 characters).")
+    @Size(min = 2, max = 500, message = "Description does not respect the field validation rules (2-500 characters).")
     private String description;
 
     @ApiModelProperty(required = true, example = "01-01-2020")
@@ -29,7 +32,7 @@ public class BookDto {
     private Date publicationDate;
 
     @NotNull
-    @Min(value = 5, message= "Number of pages does not respect the field validation rules. (Minim value: 5).")
+    @Min(value = 5, message = "Number of pages does not respect the field validation rules. (Minim value: 5).")
     private Integer numberOfPages;
 
     private Double cost;
