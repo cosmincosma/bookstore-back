@@ -16,11 +16,12 @@ import javax.validation.constraints.*;
 @Setter
 public class BookDto {
 
-    @NotBlank
+    @NotBlank(message = "Title does not respect the field validation rules (2-50 characters).")
     @Size(min = 2, max = 50, message = "Title does not respect the field validation rules (2-50 characters).")
     private String title;
 
     @Size(min = 2, max = 500, message = "Description does not respect the field validation rules (2-500 characters).")
+    @NotBlank(message = "Description does not respect the field validation rules (2-500 characters).")
     private String description;
 
     @ApiModelProperty(required = true, example = "2020")
@@ -28,12 +29,13 @@ public class BookDto {
     @Min(value = 1, message = "Year does not respect the field validation rules (0-current year).")
     private Short publicationYear;
 
-    @NotNull
+    @NotNull(message = "Number of pages does not respect the field validation rules. (Minim value: 5).")
     @Min(value = 5, message = "Number of pages does not respect the field validation rules. (Minim value: 5).")
     private Integer numberOfPages;
 
     private Double cost;
 
+    @NotNull(message = "The language must be selected.")
     private Language language;
 
     private String imageURL;
