@@ -12,7 +12,7 @@ import javax.validation.ConstraintViolation;
 import javax.validation.Validation;
 import javax.validation.Validator;
 import javax.validation.ValidatorFactory;
-import java.util.Date;
+import java.time.Year;
 import java.util.Set;
 
 import static org.junit.Assert.*;
@@ -36,7 +36,7 @@ public class BookValidationTest {
         bookDto.setDescription("Descriere");
         bookDto.setCost(100.00);
         bookDto.setNumberOfPages(200);
-        bookDto.setPublicationDate(new Date());
+        bookDto.setPublicationYear((short) Year.now().getValue());
         bookDto.setImageURL("https://www.google.ro/image.jpg");
         bookDto.setLanguage(Language.ROMANIAN);
 
@@ -52,7 +52,7 @@ public class BookValidationTest {
         bookDto.setDescription("Descriere");
         bookDto.setCost(100.00);
         bookDto.setNumberOfPages(220);
-        bookDto.setPublicationDate(new Date());
+        bookDto.setPublicationYear((short) Year.now().getValue());
         bookDto.setImageURL("https://www.google.ro/image.jpg");
         bookDto.setLanguage(Language.ROMANIAN);
 
@@ -71,7 +71,7 @@ public class BookValidationTest {
         bookDto.setTitle("a");
         bookDto.setDescription("d");
         bookDto.setCost(225.00);
-        bookDto.setPublicationDate(new Date());
+        bookDto.setPublicationYear((short) Year.now().getValue());
         bookDto.setImageURL("https://www.google.ro/image.jpg");
         bookDto.setLanguage(Language.ROMANIAN);
 

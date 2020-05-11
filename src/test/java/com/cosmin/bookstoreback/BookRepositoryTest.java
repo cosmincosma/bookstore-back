@@ -11,7 +11,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit4.SpringRunner;
 
-import java.util.Date;
+import java.time.Year;
 
 import static org.junit.Assert.*;
 
@@ -36,7 +36,7 @@ class BookRepositoryTest {
         Book book = new Book();
         book.setId(1L);
         book.setTitle("Alchimistul");
-        book.setPublicationDate(new Date());
+        book.setPublicationYear((short) Year.now().getValue());
         book.setDescription("Cartea Alchimistul de Paolo Coelho");
         book.setCost(35.00);
         book.setNumberOfPages(220);

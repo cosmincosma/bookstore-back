@@ -4,7 +4,6 @@ import lombok.Getter;
 import lombok.Setter;
 
 import javax.persistence.*;
-import java.util.Date;
 
 
 @Getter
@@ -22,9 +21,8 @@ public class Book {
     @Column(length = 500)
     private String description;
 
-    @Temporal(TemporalType.DATE)
-    @Column(name = "publication_date")
-    private Date publicationDate;
+    @Column(name = "publication_year")
+    private Short publicationYear;
 
     @Column(name = "number_of_pages", nullable = false)
     private Integer numberOfPages;
