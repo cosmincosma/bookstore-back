@@ -51,7 +51,7 @@ public class BookController {
 
         Book book = bookService.saveBook(modelMapper.map(bookDto, Book.class));
         validations.put("book_id", book.getId().toString());
-        validations.put("Generated ISBN: ", securityService.decrypt(book.getIsbn(), Consts.secretKey));
+        validations.put("generated_isbn", securityService.decrypt(book.getIsbn(), Consts.secretKey));
 
         return new ResponseEntity<>(validations, HttpStatus.CREATED);
     }
@@ -73,10 +73,10 @@ public class BookController {
         List<Book> bookList = bookService.getAllBooksOrderedByTitleAsc();
         if (bookList.isEmpty()) {
             log.info("OK: There are no books saved.");
-            return new ResponseEntity<List>(Collections.emptyList(), HttpStatus.OK);
+            return new ResponseEntity<>(Collections.emptyList(), HttpStatus.OK);
         } else {
             log.info("OK: Books return with succes.");
-            return new ResponseEntity<List>(Arrays.asList(modelMapper.map(bookList, BookDetailsDto[].class)), HttpStatus.OK);
+            return new ResponseEntity<>(Arrays.asList(modelMapper.map(bookList, BookDetailsDto[].class)), HttpStatus.OK);
         }
     }
 
@@ -99,7 +99,7 @@ public class BookController {
             Map<String, String> validations = checkValidations(isbnDto);
 
             if (!validations.isEmpty()) {
-                return new ResponseEntity<Object>(validations, HttpStatus.BAD_REQUEST);
+                return new ResponseEntity<>(validations, HttpStatus.BAD_REQUEST);
             }
 
             if (book.getIsbn().equals(securityService.encrypt(isbnDto.getIsbn(), Consts.secretKey))) {
@@ -124,24 +124,19 @@ public class BookController {
             Map<String, String> validations = checkValidations(availabilityDto);
 
             if (!validations.isEmpty()) {
-                return new ResponseEntity<Object>(validations, HttpStatus.BAD_REQUEST);
+                return new ResponseEntity<>(validations, HttpStatus.BAD_REQUEST);
             }
 
-            if (book.getIsbn().equals(securityService.encrypt(availabilityDto.getIsbnDto().getIsbn(), Consts.secretKey))) {
-                bookService.updateBookAvailability(book, availabilityDto.getAvailability());
-                log.error("OK: " + Consts.UPDATED);
-                return setResponseMessage(HttpStatus.OK, Consts.UPDATED);
-            } else {
-                log.error("BAD REQUEST: " + Consts.WRONG_ISBN);
-                return setResponseMessage(HttpStatus.BAD_REQUEST, Consts.WRONG_ISBN);
-            }
+            bookService.updateBookAvailability(book, availabilityDto.getAvailability());
+            log.error("OK: " + Consts.UPDATED);
+            return setResponseMessage(HttpStatus.OK, Consts.UPDATED);
         }
     }
 
     public ResponseEntity<Object> setResponseMessage(HttpStatus httpStatus, String message) {
         Map<String, String> bookResponseMessage = new HashMap<>();
         bookResponseMessage.put("message", message);
-        return new ResponseEntity<Object>(bookResponseMessage, httpStatus);
+        return new ResponseEntity<>(bookResponseMessage, httpStatus);
     }
 
     public Map<String, String> checkValidations(Object object) {

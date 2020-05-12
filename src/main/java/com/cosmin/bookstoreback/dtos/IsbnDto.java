@@ -10,7 +10,7 @@ import javax.validation.constraints.Pattern;
 @Setter
 public class IsbnDto {
 
-    @NotBlank
+    @NotBlank(message = "ISBN number does not respect the field validation rules. Pattern: 943-x-xxxxx")
     @Pattern(regexp = "[9][4][3][-]([0-9])[-]([0-9]{5})*$", message = "ISBN number does not respect the field validation rules. Pattern: 943-x-xxxxx")
     private String isbn;
 

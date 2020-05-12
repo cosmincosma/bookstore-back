@@ -15,7 +15,7 @@ public class BookDetailsDto {
     private Long id;
     private String title;
     private String description;
-    private Short publicationYear;
+    private Integer publicationYear;
     private Integer numberOfPages;
     private Language language;
     private Double cost;

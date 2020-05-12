@@ -36,7 +36,7 @@ public class BookValidationTest {
         bookDto.setDescription("Descriere");
         bookDto.setCost(100.00);
         bookDto.setNumberOfPages(200);
-        bookDto.setPublicationYear((short) Year.now().getValue());
+        bookDto.setPublicationYear(Year.now().getValue());
         bookDto.setImageURL("https://www.google.ro/image.jpg");
         bookDto.setLanguage(Language.ROMANIAN);
 
@@ -52,7 +52,7 @@ public class BookValidationTest {
         bookDto.setDescription("Descriere");
         bookDto.setCost(100.00);
         bookDto.setNumberOfPages(220);
-        bookDto.setPublicationYear((short) Year.now().getValue());
+        bookDto.setPublicationYear(Year.now().getValue());
         bookDto.setImageURL("https://www.google.ro/image.jpg");
         bookDto.setLanguage(Language.ROMANIAN);
 
@@ -71,7 +71,7 @@ public class BookValidationTest {
         bookDto.setTitle("a");
         bookDto.setDescription("d");
         bookDto.setCost(225.00);
-        bookDto.setPublicationYear((short) Year.now().getValue());
+        bookDto.setPublicationYear(Year.now().getValue());
         bookDto.setImageURL("https://www.google.ro/image.jpg");
         bookDto.setLanguage(Language.ROMANIAN);
 

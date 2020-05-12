@@ -11,5 +11,5 @@ public class Consts {
 
     public final static String secretKey = "ALeKk03TFLaNm1ZfnPn";
 
-    public final static short currentYear = 2020;
+    public final static int currentYear = 2020;
 }

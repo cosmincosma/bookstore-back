@@ -27,7 +27,7 @@ public class BookDto {
     @ApiModelProperty(required = true, example = "2020")
     @Max(value = Consts.currentYear, message = "Year does not respect the field validation rules (0-current year).")
     @Min(value = 1, message = "Year does not respect the field validation rules (0-current year).")
-    private Short publicationYear;
+    private Integer publicationYear;
 
     @NotNull(message = "Number of pages does not respect the field validation rules. (Minim value: 5).")
     @Min(value = 5, message = "Number of pages does not respect the field validation rules. (Minim value: 5).")

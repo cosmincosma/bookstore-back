@@ -22,7 +22,7 @@ public class Book {
     private String description;
 
     @Column(name = "publication_year")
-    private Short publicationYear;
+    private Integer publicationYear;
 
     @Column(name = "number_of_pages", nullable = false)
     private Integer numberOfPages;

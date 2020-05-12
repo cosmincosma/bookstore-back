@@ -36,7 +36,7 @@ class BookRepositoryTest {
         Book book = new Book();
         book.setId(1L);
         book.setTitle("Alchimistul");
-        book.setPublicationYear((short) Year.now().getValue());
+        book.setPublicationYear(Year.now().getValue());
         book.setDescription("Cartea Alchimistul de Paolo Coelho");
         book.setCost(35.00);
         book.setNumberOfPages(220);
