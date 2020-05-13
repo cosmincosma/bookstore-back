@@ -5,8 +5,10 @@ import com.cosmin.bookstoreback.dtos.BookDetailsDto;
 import com.cosmin.bookstoreback.dtos.BookDto;
 import com.cosmin.bookstoreback.dtos.IsbnDto;
 import com.cosmin.bookstoreback.models.Book;
+import com.cosmin.bookstoreback.models.Statistics;
 import com.cosmin.bookstoreback.services.BookService;
 import com.cosmin.bookstoreback.services.SecurityService;
+import com.cosmin.bookstoreback.services.StatisticsService;
 import com.cosmin.bookstoreback.utils.Consts;
 import lombok.extern.slf4j.Slf4j;
 import org.modelmapper.ModelMapper;
@@ -29,12 +31,14 @@ public class BookController {
     private final ModelMapper modelMapper;
     private final SecurityService securityService;
     private final Validator validator;
+    private final StatisticsService statisticsService;
 
     @Autowired
-    public BookController(BookService bookService, ModelMapper modelMapper, SecurityService securityService) {
+    public BookController(BookService bookService, ModelMapper modelMapper, SecurityService securityService, StatisticsService statisticsService) {
         this.bookService = bookService;
         this.modelMapper = modelMapper;
         this.securityService = securityService;
+        this.statisticsService = statisticsService;
 
         ValidatorFactory validatorFactory = Validation.buildDefaultValidatorFactory();
         validator = validatorFactory.getValidator();
@@ -131,6 +135,16 @@ public class BookController {
             log.error("OK: " + Consts.UPDATED);
             return setResponseMessage(HttpStatus.OK, Consts.UPDATED);
         }
+    }
+
+    @GetMapping(value = "/statistics")
+    public ResponseEntity<Object> getStatistics() {
+        Statistics statistics = statisticsService.createStatistics();
+        if (statistics == null || statistics.getNumberOfBooks() == 0) {
+            log.error("NOT FOUND: " + Consts.STATISTICS_NOT_FOUND);
+            return setResponseMessage(HttpStatus.NOT_FOUND, Consts.STATISTICS_NOT_FOUND);
+        }
+        return new ResponseEntity<>(statistics, HttpStatus.OK);
     }
 
     public ResponseEntity<Object> setResponseMessage(HttpStatus httpStatus, String message) {
