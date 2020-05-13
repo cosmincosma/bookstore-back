@@ -27,7 +27,7 @@ public class StatisticsServiceImpl implements StatisticsService {
         this.bookRepository = bookRepository;
     }
 
-    public Statistics createStatistics() throws StatisticException {
+    public Statistics createStatistics() {
         Statistics statistics = new Statistics();
         List<Book> bookList = bookRepository.findAllByOrderByTitleAsc();
 

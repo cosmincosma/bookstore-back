@@ -3,13 +3,12 @@ package com.cosmin.bookstoreback.services;
 import com.cosmin.bookstoreback.models.Book;
 import com.cosmin.bookstoreback.models.Statistics;
 import com.cosmin.bookstoreback.models.StatisticsInfo;
-import com.cosmin.bookstoreback.utils.StatisticException;
 
 import java.util.List;
 
 public interface StatisticsService {
 
-    Statistics createStatistics() throws StatisticException;
+    Statistics createStatistics();
 
     Integer getNumberOfBooks(List<Book> bookList);
 
