@@ -3,12 +3,17 @@ package com.cosmin.bookstoreback.services.impl;
 import com.cosmin.bookstoreback.models.Availability;
 import com.cosmin.bookstoreback.models.Book;
 import com.cosmin.bookstoreback.models.Statistics;
+import com.cosmin.bookstoreback.models.StatisticsInfo;
 import com.cosmin.bookstoreback.repositories.BookRepository;
 import com.cosmin.bookstoreback.services.StatisticsService;
+import com.cosmin.bookstoreback.utils.StatisticException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Comparator;
+import java.util.Iterator;
+import java.util.List;
 import java.util.stream.Collectors;
 
 
@@ -22,9 +27,13 @@ public class StatisticsServiceImpl implements StatisticsService {
         this.bookRepository = bookRepository;
     }
 
-    public Statistics createStatistics() {
+    public Statistics createStatistics() throws StatisticException {
         Statistics statistics = new Statistics();
         List<Book> bookList = bookRepository.findAllByOrderByTitleAsc();
+
+        if (bookList == null || bookList.isEmpty()) {
+            throw new StatisticException();
+        }
 
         statistics.setNumberOfBooks(getNumberOfBooks(bookList));
         statistics.setNumberOfAvailableBooks(getNumberOfAvailableBooks(bookList));
@@ -54,8 +63,7 @@ public class StatisticsServiceImpl implements StatisticsService {
         return availableBooks.size();
     }
 
-    public Map<List<String>, Integer> getNewestBook(List<Book> bookList) {
-        Map<List<String>, Integer> newestBookMap = new HashMap<>();
+    public StatisticsInfo getNewestBook(List<Book> bookList) {
         List<String> newestBooksName = new ArrayList<>();
 
         int maxYear = bookList.stream()
@@ -71,13 +79,11 @@ public class StatisticsServiceImpl implements StatisticsService {
             Book book = bookIterator.next();
             newestBooksName.add(book.getTitle());
         }
-        newestBookMap.put(newestBooksName, maxYear);
 
-        return newestBookMap;
+        return new StatisticsInfo(maxYear, newestBooksName);
     }
 
-    public Map<List<String>, Integer> getOldestBook(List<Book> bookList) {
-        Map<List<String>, Integer> oldestBooksMap = new HashMap<>();
+    public StatisticsInfo getOldestBook(List<Book> bookList) {
         List<String> oldestBooksName = new ArrayList<>();
 
         int minYear = bookList.stream()
@@ -93,13 +99,11 @@ public class StatisticsServiceImpl implements StatisticsService {
             Book book = bookIterator.next();
             oldestBooksName.add(book.getTitle());
         }
-        oldestBooksMap.put(oldestBooksName, minYear);
 
-        return oldestBooksMap;
+        return new StatisticsInfo(minYear, oldestBooksName);
     }
 
-    public Map<List<String>, Double> getMostExpensiveBook(List<Book> bookList) {
-        Map<List<String>, Double> mostExpensiveBooksMap = new HashMap<>();
+    public StatisticsInfo getMostExpensiveBook(List<Book> bookList) {
         List<String> mostExpensiveBooksName = new ArrayList<>();
 
         double maxCost = bookList.stream()
@@ -115,13 +119,11 @@ public class StatisticsServiceImpl implements StatisticsService {
             Book book = bookIterator.next();
             mostExpensiveBooksName.add(book.getTitle());
         }
-        mostExpensiveBooksMap.put(mostExpensiveBooksName, maxCost);
 
-        return mostExpensiveBooksMap;
+        return new StatisticsInfo(maxCost, mostExpensiveBooksName);
     }
 
-    public Map<List<String>, Double> getCheapestBook(List<Book> bookList) {
-        Map<List<String>, Double> mostCheapestBooksMap = new HashMap<>();
+    public StatisticsInfo getCheapestBook(List<Book> bookList) {
         List<String> mostCheapestBooksName = new ArrayList<>();
 
         double minCost = bookList.stream()
@@ -137,8 +139,7 @@ public class StatisticsServiceImpl implements StatisticsService {
             Book book = bookIterator.next();
             mostCheapestBooksName.add(book.getTitle());
         }
-        mostCheapestBooksMap.put(mostCheapestBooksName, minCost);
 
-        return mostCheapestBooksMap;
+        return new StatisticsInfo(minCost, mostCheapestBooksName);
     }
 }

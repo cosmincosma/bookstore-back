@@ -29,7 +29,7 @@ public class StatisticsServiceTest {
     NumberGenerator numberGenerator;
 
     @Test
-    public void shouldRetrieveStatistics() {
+    public void shouldRetrieveStatistics() throws Exception {
         Book book1 = new Book();
         book1.setId(1L);
         book1.setTitle("Alchimistul");

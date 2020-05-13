@@ -10,6 +10,7 @@ import com.cosmin.bookstoreback.services.BookService;
 import com.cosmin.bookstoreback.services.SecurityService;
 import com.cosmin.bookstoreback.services.StatisticsService;
 import com.cosmin.bookstoreback.utils.Consts;
+import com.cosmin.bookstoreback.utils.StatisticException;
 import lombok.extern.slf4j.Slf4j;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -139,8 +140,10 @@ public class BookController {
 
     @GetMapping(value = "/statistics")
     public ResponseEntity<Object> getStatistics() {
-        Statistics statistics = statisticsService.createStatistics();
-        if (statistics == null || statistics.getNumberOfBooks() == 0) {
+        Statistics statistics;
+        try {
+            statistics = statisticsService.createStatistics();
+        } catch (StatisticException e) {
             log.error("NOT FOUND: " + Consts.STATISTICS_NOT_FOUND);
             return setResponseMessage(HttpStatus.NOT_FOUND, Consts.STATISTICS_NOT_FOUND);
         }
