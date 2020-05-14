@@ -6,7 +6,7 @@ import com.cosmin.bookstoreback.models.Statistics;
 import com.cosmin.bookstoreback.models.StatisticsInfo;
 import com.cosmin.bookstoreback.repositories.BookRepository;
 import com.cosmin.bookstoreback.services.StatisticsService;
-import com.cosmin.bookstoreback.utils.StatisticException;
+import com.cosmin.bookstoreback.utils.StatisticsException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
@@ -15,7 +15,6 @@ import java.util.Comparator;
 import java.util.Iterator;
 import java.util.List;
 import java.util.stream.Collectors;
-
 
 @Component
 public class StatisticsServiceImpl implements StatisticsService {
@@ -32,7 +31,7 @@ public class StatisticsServiceImpl implements StatisticsService {
         List<Book> bookList = bookRepository.findAllByOrderByTitleAsc();
 
         if (bookList == null || bookList.isEmpty()) {
-            throw new StatisticException();
+            throw new StatisticsException();
         }
 
         statistics.setNumberOfBooks(getNumberOfBooks(bookList));
@@ -63,6 +62,7 @@ public class StatisticsServiceImpl implements StatisticsService {
         return availableBooks.size();
     }
 
+    @SuppressWarnings("DuplicatedCode")
     public StatisticsInfo getNewestBook(List<Book> bookList) {
         List<String> newestBooksName = new ArrayList<>();
 
@@ -83,6 +83,7 @@ public class StatisticsServiceImpl implements StatisticsService {
         return new StatisticsInfo(maxYear, newestBooksName);
     }
 
+    @SuppressWarnings("DuplicatedCode")
     public StatisticsInfo getOldestBook(List<Book> bookList) {
         List<String> oldestBooksName = new ArrayList<>();
 
@@ -103,6 +104,7 @@ public class StatisticsServiceImpl implements StatisticsService {
         return new StatisticsInfo(minYear, oldestBooksName);
     }
 
+    @SuppressWarnings("DuplicatedCode")
     public StatisticsInfo getMostExpensiveBook(List<Book> bookList) {
         List<String> mostExpensiveBooksName = new ArrayList<>();
 
@@ -123,6 +125,7 @@ public class StatisticsServiceImpl implements StatisticsService {
         return new StatisticsInfo(maxCost, mostExpensiveBooksName);
     }
 
+    @SuppressWarnings("DuplicatedCode")
     public StatisticsInfo getCheapestBook(List<Book> bookList) {
         List<String> mostCheapestBooksName = new ArrayList<>();
 
