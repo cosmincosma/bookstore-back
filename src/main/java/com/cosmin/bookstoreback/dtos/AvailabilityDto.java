@@ -4,17 +4,13 @@ import com.cosmin.bookstoreback.models.Availability;
 import lombok.Getter;
 import lombok.Setter;
 
-import javax.validation.Valid;
 import javax.validation.constraints.NotNull;
 
 @Getter
 @Setter
 public class AvailabilityDto {
 
-    @Valid
-    private IsbnDto isbnDto;
-
-    @NotNull
+    @NotNull(message = "Availability must be selected")
     private Availability availability;
 
 }

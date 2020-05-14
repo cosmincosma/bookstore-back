@@ -5,9 +5,12 @@ import com.cosmin.bookstoreback.dtos.BookDetailsDto;
 import com.cosmin.bookstoreback.dtos.BookDto;
 import com.cosmin.bookstoreback.dtos.IsbnDto;
 import com.cosmin.bookstoreback.models.Book;
+import com.cosmin.bookstoreback.models.Statistics;
 import com.cosmin.bookstoreback.services.BookService;
 import com.cosmin.bookstoreback.services.SecurityService;
+import com.cosmin.bookstoreback.services.StatisticsService;
 import com.cosmin.bookstoreback.utils.Consts;
+import com.cosmin.bookstoreback.utils.StatisticsException;
 import lombok.extern.slf4j.Slf4j;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -29,12 +32,14 @@ public class BookController {
     private final ModelMapper modelMapper;
     private final SecurityService securityService;
     private final Validator validator;
+    private final StatisticsService statisticsService;
 
     @Autowired
-    public BookController(BookService bookService, ModelMapper modelMapper, SecurityService securityService) {
+    public BookController(BookService bookService, ModelMapper modelMapper, SecurityService securityService, StatisticsService statisticsService) {
         this.bookService = bookService;
         this.modelMapper = modelMapper;
         this.securityService = securityService;
+        this.statisticsService = statisticsService;
 
         ValidatorFactory validatorFactory = Validation.buildDefaultValidatorFactory();
         validator = validatorFactory.getValidator();
@@ -51,7 +56,7 @@ public class BookController {
 
         Book book = bookService.saveBook(modelMapper.map(bookDto, Book.class));
         validations.put("book_id", book.getId().toString());
-        validations.put("Generated ISBN: ", securityService.decrypt(book.getIsbn(), Consts.secretKey));
+        validations.put("generated_isbn", securityService.decrypt(book.getIsbn(), Consts.secretKey));
 
         return new ResponseEntity<>(validations, HttpStatus.CREATED);
     }
@@ -73,10 +78,10 @@ public class BookController {
         List<Book> bookList = bookService.getAllBooksOrderedByTitleAsc();
         if (bookList.isEmpty()) {
             log.info("OK: There are no books saved.");
-            return new ResponseEntity<List>(Collections.emptyList(), HttpStatus.OK);
+            return new ResponseEntity<>(Collections.emptyList(), HttpStatus.OK);
         } else {
             log.info("OK: Books return with succes.");
-            return new ResponseEntity<List>(Arrays.asList(modelMapper.map(bookList, BookDetailsDto[].class)), HttpStatus.OK);
+            return new ResponseEntity<>(Arrays.asList(modelMapper.map(bookList, BookDetailsDto[].class)), HttpStatus.OK);
         }
     }
 
@@ -99,7 +104,7 @@ public class BookController {
             Map<String, String> validations = checkValidations(isbnDto);
 
             if (!validations.isEmpty()) {
-                return new ResponseEntity<Object>(validations, HttpStatus.BAD_REQUEST);
+                return new ResponseEntity<>(validations, HttpStatus.BAD_REQUEST);
             }
 
             if (book.getIsbn().equals(securityService.encrypt(isbnDto.getIsbn(), Consts.secretKey))) {
@@ -124,24 +129,31 @@ public class BookController {
             Map<String, String> validations = checkValidations(availabilityDto);
 
             if (!validations.isEmpty()) {
-                return new ResponseEntity<Object>(validations, HttpStatus.BAD_REQUEST);
+                return new ResponseEntity<>(validations, HttpStatus.BAD_REQUEST);
             }
 
-            if (book.getIsbn().equals(securityService.encrypt(availabilityDto.getIsbnDto().getIsbn(), Consts.secretKey))) {
-                bookService.updateBookAvailability(book, availabilityDto.getAvailability());
-                log.error("OK: " + Consts.UPDATED);
-                return setResponseMessage(HttpStatus.OK, Consts.UPDATED);
-            } else {
-                log.error("BAD REQUEST: " + Consts.WRONG_ISBN);
-                return setResponseMessage(HttpStatus.BAD_REQUEST, Consts.WRONG_ISBN);
-            }
+            bookService.updateBookAvailability(book, availabilityDto.getAvailability());
+            log.error("OK: " + Consts.UPDATED);
+            return setResponseMessage(HttpStatus.OK, Consts.UPDATED);
         }
+    }
+
+    @GetMapping(value = "/statistics")
+    public ResponseEntity<Object> getStatistics() {
+        Statistics statistics;
+        try {
+            statistics = statisticsService.createStatistics();
+        } catch (StatisticsException e) {
+            log.error("NOT FOUND: " + Consts.STATISTICS_NOT_FOUND);
+            return setResponseMessage(HttpStatus.NOT_FOUND, Consts.STATISTICS_NOT_FOUND);
+        }
+        return new ResponseEntity<>(statistics, HttpStatus.OK);
     }
 
     public ResponseEntity<Object> setResponseMessage(HttpStatus httpStatus, String message) {
         Map<String, String> bookResponseMessage = new HashMap<>();
         bookResponseMessage.put("message", message);
-        return new ResponseEntity<Object>(bookResponseMessage, httpStatus);
+        return new ResponseEntity<>(bookResponseMessage, httpStatus);
     }
 
     public Map<String, String> checkValidations(Object object) {
